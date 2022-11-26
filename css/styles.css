@@ -22,3 +22,12 @@
 .x-axis, .y-axis {
     font-size: .5em;
 }
+
+.thumbnail {
+    opacity: 1;
+    cursor: default;
+}
+.thumbnail :hover{
+    opacity: 0.8;
+    cursor: pointer;
+}

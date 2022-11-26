@@ -104,7 +104,7 @@ function displayAllImages (setName){
 
         htmlString +=
             `<div class="col">
-                <div class="row">
+                <div class="row thumbnail">
                     <img src="data/rob_1/img/${setName}/${imageName}.jpeg" width="${width}" onclick="displayDetails('${imageName}')">
                 </div>
             </div>`
