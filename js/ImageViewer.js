@@ -76,7 +76,7 @@ class ImageViewer {
 
         // sat_image_gt
         vis.img_1 = vis.svg.append('image')
-            .attr('href', `../img/sat_image_gt/${selectedImageName}.jpeg`)
+            .attr('href', `data/rob_1/img/sat_image_gt/${selectedImageName}.jpeg`)
             .attr('height', `${vis.rowOneHeight}`)
             .attr('width',  `${vis.width/8}`)
             .attr('x', `${vis.width/100}`)
@@ -85,7 +85,7 @@ class ImageViewer {
 
         // sat_image_syn
         vis.img_2 = vis.svg.append('image')
-            .attr('href', `../img/sat_image_syn/${selectedImageName}.jpeg`)
+            .attr('href', `data/rob_1/img/sat_image_syn/${selectedImageName}.jpeg`)
             .attr('height', `${vis.width/8}`)
             .attr('width',  `${vis.width/8}`)
             .attr('x', `${vis.width/100}`)
@@ -94,7 +94,7 @@ class ImageViewer {
 
         // label_in_gt
         vis.img_3 = vis.svg.append('image')
-            .attr('href', `../img/label_in_gt/${selectedImageName}.jpeg`)
+            .attr('href', `data/rob_1/img/label_in_gt/${selectedImageName}.jpeg`)
             .attr('height', `${vis.width/8}`)
             .attr('width',  `${vis.width/8}`)
             .attr('x', `${vis.width*15.5/100}`)
@@ -103,7 +103,7 @@ class ImageViewer {
 
         // label_out_real
         vis.img_4 = vis.svg.append('image')
-            .attr('href', `../img/label_out_real/${selectedImageName}.jpeg`)
+            .attr('href', `data/rob_1/img/label_out_real/${selectedImageName}.jpeg`)
             .attr('height', `${vis.width/8}`)
             .attr('width',  `${vis.width/8}`)
             .attr('x', `${vis.width*30/100}`)
@@ -112,7 +112,7 @@ class ImageViewer {
 
         // label_out_syn
         vis.img_5 = vis.svg.append('image')
-            .attr('href', `../img/label_out_syn/${selectedImageName}.jpeg`)
+            .attr('href', `data/rob_1/img/label_out_syn/${selectedImageName}.jpeg`)
             .attr('height', `${vis.width/8}`)
             .attr('width',  `${vis.width/8}`)
             .attr('x', `${vis.width*30/100}`)
@@ -120,7 +120,7 @@ class ImageViewer {
 
         // init satellite ground truth
         vis.img_6 = vis.svg.append('image')
-            .attr('href', `../img/contrast_real/${selectedImageName}.jpeg`)
+            .attr('href', `data/rob_1/img/contrast_real/${selectedImageName}.jpeg`)
             .attr('height', `${vis.width/8}`)
             .attr('width',  `${vis.width/8}`)
             .attr('x', '40vw')
@@ -129,7 +129,7 @@ class ImageViewer {
 
         // init satellite ground truth
         vis.img_7 = vis.svg.append('image')
-            .attr('href', `../img/contrast_syn/${selectedImageName}.jpeg`)
+            .attr('href', `data/rob_1/img/contrast_syn/${selectedImageName}.jpeg`)
             .attr('height', `${vis.width/8}`)
             .attr('width',  `${vis.width/8}`)
             .attr('x', '40vw')
@@ -165,13 +165,13 @@ class ImageViewer {
     updateImages(selectedImageName){
 
         let vis = this
-        vis.img_1.attr('href', `../img/sat_image_gt/${selectedImageName}.jpeg`)       // sat_image_gt
-        vis.img_2.attr('href', `../img/sat_image_syn/${selectedImageName}.jpeg`)      // sat_image_syn
-        vis.img_3.attr('href', `../img/label_in_gt/${selectedImageName}.jpeg`)        // label_in_gt
-        vis.img_4.attr('href', `../img/label_out_real/${selectedImageName}.jpeg`)     // label_out_real
-        vis.img_5.attr('href', `../img/label_out_syn/${selectedImageName}.jpeg`)      // label_out_syn
-        vis.img_6.attr('href', `../img/contrast_real/${selectedImageName}.jpeg`)      // contrast_real
-        vis.img_7.attr('href', `../img/contrast_syn/${selectedImageName}.jpeg`)       // contrast_syn
+        vis.img_1.attr('href', `data/rob_1/img/sat_image_gt/${selectedImageName}.jpeg`)       // sat_image_gt
+        vis.img_2.attr('href', `data/rob_1/img/sat_image_syn/${selectedImageName}.jpeg`)      // sat_image_syn
+        vis.img_3.attr('href', `data/rob_1/img/label_in_gt/${selectedImageName}.jpeg`)        // label_in_gt
+        vis.img_4.attr('href', `data/rob_1/img/label_out_real/${selectedImageName}.jpeg`)     // label_out_real
+        vis.img_5.attr('href', `data/rob_1/img/label_out_syn/${selectedImageName}.jpeg`)      // label_out_syn
+        vis.img_6.attr('href', `data/rob_1/img/contrast_real/${selectedImageName}.jpeg`)      // contrast_real
+        vis.img_7.attr('href', `data/rob_1/img/contrast_syn/${selectedImageName}.jpeg`)       // contrast_syn
     }
 
     updateBars() {
