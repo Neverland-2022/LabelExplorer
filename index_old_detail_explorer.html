@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Label Explorer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+
+<!-- WRAPPER -->
+<div class="container-fluid" style="height: 100vh; padding-top: 1vh">
+    <div class="row">
+        <div class="col-10 offset-1" style="border: thin solid grey; border-radius: 5px;">
+
+            <!-- HEADING -->
+            <div class="row d-flex justify-content-center" style="height: 8vh; padding: 0; background: #bdbdbd;">
+                <div class="align-self-center">
+                    <h1>Label Explorer</h1>
+                </div>
+            </div>
+
+            <div class="row justify-content-center" style="height: 5vh; background: #bdbdbd; padding-bottom: 1vh; border-bottom: thin solid grey">
+                <button id="switchView" class="btn btn-dark align-self-center" type="button"
+                        onclick="switchView()">switch to individual experiment view
+                </button>
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <!-- OVERVIEW PAGE -->
+
+            <div class="row" id="overviewDiv" style="height: 75vh">
+                <div class="col">
+                    test
+                </div>
+            </div>
+
+            <!-- DETAILS PAGE -->
+            <div class="row" id="detailsDiv" style="height: 75vh">
+                <div class="col">
+                    <div class="row" style="height: 12.5vh; background: rgba(64,64,64,0.5); border-top: thin solid grey; border-bottom: thin solid grey">
+
+                        <div class="col-4">
+                            <div class="row justify-content-center" style="height: 3vh; margin-top:1.5vh">
+                                <span class="align-self-center">experiment</span>
+                            </div>
+                            <div class="row justify-content-center" style="height: 8vh">
+                                <select id='dataSetSelector' class="custom-select align-self-center"
+                                        style="width: 50%" onchange="changeDataSet()">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-4">
+
+                        </div>
+                        <div class="col-4">
+                            <div class="row justify-content-center" style="height: 3vh; margin-top:1.5vh">
+                                <span class="align-self-center">image</span>
+                            </div>
+                            <div class="row justify-content-center" style="height: 8vh">
+                                <select id='imageSelector' class="custom-select align-self-center"
+                                        style="width: 50%" onchange="selectImageName()">
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" id="imageViewerDrawingDiv" style="height: 60vh; background: white; padding: 0;"></div>
+
+                    <div class="row d-none" id="SetDisplayDiv" style="height: 60vh; background: white; padding: 0;"></div>
+
+                    <div class="row" style="height: 12.5vh; background: rgba(64,64,64,0.5); border-top: thin solid grey; padding: 0;">
+                        <div class="col-2">
+                            <div class="row justify-content-center" style="height: 100%">
+                                <button class="btn btn-light align-self-center" type="button"
+                                        onclick="displayAllImages('sat_image_gt')">sat_image_gt
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row justify-content-center" style="height: 100%">
+                                <button class="btn btn-light align-self-center" type="button"
+                                        onclick="displayAllImages('sat_image_syn')">label_in_gt
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row justify-content-center" style="height: 100%">
+                                <button class="btn btn-light align-self-center" type="button"
+                                        onclick="displayAllImages('label_out_real')">label_out_real
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row justify-content-center" style="height: 100%">
+                                <button class="btn btn-light align-self-center" type="button"
+                                        onclick="displayAllImages('label_out_syn')">label_out_syn
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row justify-content-center" style="height: 100%">
+                                <button class="btn btn-light align-self-center" type="button"
+                                        onclick="displayAllImages('contrast_real')">contrast_real
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row justify-content-center" style="height: 100%">
+                                <button class="btn btn-light align-self-center" type="button"
+                                        onclick="displayAllImages('contrast_syn')">contrast_syn
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- - - - - - - - - - - - >
+<    Load JS libraries     >
+<- - - - - - - - - - - - -->
+
+<!-- BOOTSTRAP -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<!-- d3 -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://d3js.org/d3-array.v2.min.js"></script>
+<script src="https://d3js.org/d3-geo.v2.min.js"></script>
+
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+
+<!-- OWN JS -->
+
+<script src="js/ImageViewer.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

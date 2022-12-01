@@ -38,3 +38,23 @@
     opacity: 0.8;
     cursor: pointer;
 }
+
+.gfg {
+    margin: 1%;
+    position: relative;
+}
+
+.first-txt {
+    position: absolute;
+    top: -1vh;
+}
+
+h3 {
+    font-size: 1vh;
+    text-align: center;
+    width: 100%;
+}
+
+.title {
+    font-size: 1vh;
+}

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>map & brush</title>
+    <title>Label Explorer</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -16,88 +16,291 @@
         <div class="col-10 offset-1" style="border: thin solid grey; border-radius: 5px;">
 
             <!-- HEADING -->
-            <div class="row d-flex justify-content-center" style="height: 10vh; padding: 0; background: #bdbdbd;">
-                <div class="align-self-center">
-                    <h1>Label Explorer</h1>
+<!--            <div class="row d-flex justify-content-center" style="height: 10vh; padding: 0; background: #bdbdbd; border-bottom: thin solid grey">-->
+<!--                <div class="align-self-center">-->
+<!--                    <h1>Label Explorer</h1>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <!-- SELECTION-ROW -->
+            <div class="row" style="height: 10vh;">
+                <div class="col-4">
+                    <div class="row" style="height: 100%; padding: 0.5vh">
+                        <div class="col">
+                            <div class="row justify-content-center" style="border: thin solid grey; height: 100%; background: #bdbdbd; border-radius: 5px">
+                                <div class="col">
+                                    <div class="row justify-content-center">
+                                        <div class="span align-self-center">Experiments:</div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <select id='dataSetSelector' class="custom-select align-self-center"
+                                                style="width: 50%" onchange="changeDataSet()">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="row" style="height: 100%; padding: 0.5vh">
+                        <div class="col">
+                            <div class="row justify-content-center" style="border: thin solid grey; height: 100%; background: #bdbdbd; border-radius: 5px">
+                                <button id="switchView" class="btn  btn-secondary align-self-center" type="button"
+                                        onclick="switchView()" style="border: thin solid black; background: #6e6a6a; font-size: 1vh">switch to individual experiment view
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="row" style="height: 100%; padding: 0.5vh">
+                        <div class="col">
+                            <div class="row justify-content-center" style="border: thin solid grey; height: 100%; background: #bdbdbd; border-radius: 5px">
+                                <select id='imageSelector' class="custom-select align-self-center"
+                                        style="width: 50%" onchange="changeSet()">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- CONTENT -->
+            <div class="row" style="height: 88.5vh;">
+                <div class="col">
 
-            <div class="row" style="height: 12.5vh; background: rgba(64,64,64,0.5); border-top: thin solid grey; border-bottom: thin solid grey">
+                    <!--                                    OPTION ONE-->
+                    <div class="row" style="height: 88vh; padding: 0.5vh">
+                        <div class="col">
 
-                <div class="col-6">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <select id='dataSetSelector' class="custom-select align-self-center"
-                                style="width: 50%" onchange="changeDataSet()">
-                        </select>
+<!--                            IMAGES -->
+                            <div class="row" style="border: thin solid grey; height: 40vh; border-radius: 5px; background: #bdbdbd;">
+                                <div class="col-3">
+
+                                    <div class="row" style="height: 40vh">
+
+                                        <div class="col-6">
+                                            <div class="row" style="height: 10vh"></div>
+                                            <div class="row" style="height:20vh">
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%;">
+                                                        <img class="align-self-center" id="gt_label" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 90%">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+
+                                            <div class="row justify-content-center" style="height: 20vh">
+                                                <img class="align-self-center" id="gt_sat_img" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                            <div class="row justify-content-center" style="height: 20vh">
+                                                <img class="align-self-center" id="syn_sat_img" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-9">
+<!--                                    TOP-->
+                                    <div class="row" style="height: 20vh">
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_gen_lm_0" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="height: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_gen_lm_25" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2" >
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_gen_lm_50" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2" >
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_gen_lm_75" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_gen_lm_100" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_gen_lm_200" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                    </div>
+<!--                                    BOTTOM-->
+                                    <div class="row" style="height: 20vh">
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_syn_lm_0" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="height: 18vh;" >
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_syn_lm_25" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_syn_lm_50" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_syn_lm_75" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_syn_lm_100" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                                <img class="align-self-center" id="real_syn_lm_200" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="height: 15vh">
+                                <div class="col-3">
+                                    <div class="row" style="border: thin solid grey; height: 15vh; margin-right: -0.5vw; border-radius: 5px; background: #bdbdbd; margin-top: 0.5vh">colormanager</div>
+
+                                </div>
+                                <div class="col-9">
+                                    <div class="row" style="border: thin solid grey; height: 15vh; border-radius: 5px; background: #bdbdbd; margin-top: 0.5vh">
+                                        <div class="col-2">
+                                            <div class="row" id="bcb_0" style="height: 15vh; border-right: thin dotted black">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row" id="bcb_1" style="height: 15vh; border-right: thin dotted black">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row" id="bcb_2" style="height: 15vh; border-right: thin dotted black">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row" id="bcb_3" style="height: 15vh; border-right: thin dotted black">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row" id="bcb_4" style="height: 15vh; border-right: thin dotted black">
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row" id="bcb_5" style="height: 15vh">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+<!--                            SCORES OVERALL -->
+                            <div class="row" style="border: thin solid grey; height: 31vh; border-radius: 5px; background: #bdbdbd; margin-top: 1vh">
+                                <div class="col-6">
+                                    <div class="row" style="height: 29vh; margin-top: 1vh; margin-bottom: 1vh; margin-left: 0.1vw; border: thin solid grey; background: white">
+                                        <div class="col" id="scoreTable">
+                                            <div class="row" style="height: 5vh; font-size: 1vh; border-bottom: thin solid black">
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           Method
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            water
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                         forest
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           low vegetation
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           barren land
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            impervious (other)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           impervious (road)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            DICE (overall)
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--                                    OPTION Two-->
+                    <div class="row d-none" style="height: 100%; padding: 0.5vh">
+                        <div class="col">
+                            <div class="row" style="border: thin solid grey; height: 100%; border-radius: 5px; background: #bdbdbd;">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <select id='imageSelector' class="custom-select align-self-center"
-                                style="width: 50%" onchange="selectImageName()">
-                        </select>
-                    </div>
-                </div>
-
             </div>
 
 
-
-            <div class="row" id="imageViewerDrawingDiv" style="height: 60vh; background: white; padding: 0;"></div>
-
-            <div class="row d-none" id="SetDisplayDiv" style="height: 60vh; background: white; padding: 0;">
-            </div>
+            <!-- CONTENT -->
 
 
-
-
-
-            <div class="row" style="height: 12.5vh; background: rgba(64,64,64,0.5); border-top: thin solid grey; padding: 0;">
-                <div class="col-2">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <button class="btn btn-light align-self-center" type="button"
-                                onclick="displayAllImages('sat_image_gt')">sat_image_gt
-                        </button>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <button class="btn btn-light align-self-center" type="button"
-                                onclick="displayAllImages('sat_image_syn')">label_in_gt
-                        </button>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <button class="btn btn-light align-self-center" type="button"
-                                onclick="displayAllImages('label_out_real')">label_out_real
-                        </button>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <button class="btn btn-light align-self-center" type="button"
-                                onclick="displayAllImages('label_out_syn')">label_out_syn
-                        </button>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <button class="btn btn-light align-self-center" type="button"
-                                onclick="displayAllImages('contrast_real')">contrast_real
-                        </button>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="row justify-content-center" style="height: 100%">
-                        <button class="btn btn-light align-self-center" type="button"
-                                onclick="displayAllImages('contrast_syn')">contrast_syn
-                        </button>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -125,7 +328,11 @@
 
 <!-- OWN JS -->
 
+<script src="js/ChangingLinesVis.js"></script>
+<script src="js/BreadCrumbBar.js"></script>
+
 <script src="js/ImageViewer.js"></script>
+<script src="js/imageNames.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

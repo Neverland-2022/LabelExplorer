@@ -1,132 +1,170 @@
-/* * * * * * * * * * * * * *
-*           MAIN           *
-* * * * * * * * * * * * * */
+let selectedImageName = 'm_3807502_se_18_1_naip-new_cp10';
 
-// init global variables & switches
+console.log(imageNames)
 
-let imageViewer
+// first, populate image options
+populateImageOptions(imageNames)
 
-let dataSetNames = ['rob_1']
-let selectedDataSet = 'rob_1'
-let imageNamesInSelectedDataSet = []
-let selectedImageName = ''
-
-
-// load data using promises
-let promises = [
-    d3.json("data/full_info.json")
-];
-
-Promise.all(promises)
-    .then(function (data) {
-        initMainPage(data)
-    })
-    .catch(function (err) {
-        console.log(err)
-    });
-
-// initMainPage
-function initMainPage(dataArray) {
-
-    // first thing, populate all image options
-    populateImageOptions(dataArray[0]['info_summary']['image_names'])
-    populateDataSetOptions(dataSetNames)
-
-    // then save all names in an array
-    imageNamesInSelectedDataSet = dataArray[0]['info_summary']['image_names']
-
-    // set initial image to first image and use the respective data to initialize the image Viewer
-    selectedImageName = dataArray[0]['info_summary']['image_names'][0]
-
-    // then, initialize ImageViewer instance
-    imageViewer = new ImageViewer('imageViewerDrawingDiv', dataArray[0])
-
-
-
-
-}
-
+// helper functions
 function populateImageOptions(imageList) {
     imageList.forEach(imageName => {
         document.querySelector('#imageSelector').innerHTML += `<option value="${imageName}" selected>${imageName}</option>`
     })
 }
 
-function populateDataSetOptions(dataSetList) {
-    dataSetList.forEach(dataSetName => {
-        document.querySelector('#dataSetSelector').innerHTML += `<option value="${dataSetName}" selected>${dataSetName}</option>`
-    })
-}
-
-
-function selectImageName() {
+function changeSet() {
     selectedImageName = document.querySelector('#imageSelector').value
 
-    changeImage()
+    console.log(selectedImageName)
+    document.getElementById('gt_label').src = `data/final_res/ground_truth_masks/${selectedImageName}.png`
+    document.getElementById('gt_sat_img').src = `data/final_res/original_images_real/${selectedImageName}.png`
+    document.getElementById('syn_sat_img').src = `data/final_res/original_images_syn/${selectedImageName}.png`
+
+    document.getElementById('real_gen_lm_0').src = `data/final_res/${selectedImageName}/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png`
+    document.getElementById('real_gen_lm_25').src = `data/final_res/${selectedImageName}/checkpoints_syn_025_checkpoint_epoch5_mix_25_real.png`
+    document.getElementById('real_gen_lm_50').src = `data/final_res/${selectedImageName}/checkpoints_syn_050_checkpoint_epoch5_mix_50_real.png`
+    document.getElementById('real_gen_lm_75').src = `data/final_res/${selectedImageName}/checkpoints_syn_075_checkpoint_epoch5_mix_75_real.png`
+    document.getElementById('real_gen_lm_100').src = `data/final_res/${selectedImageName}/checkpoints_syn_100_checkpoint_epoch5_mix_100_real.png`
+    document.getElementById('real_gen_lm_200').src = `data/final_res/${selectedImageName}/checkpoints_syn_200_checkpoint_epoch5_mix_100_real.png`
+
+    document.getElementById('real_syn_lm_0').src = `data/final_res/${selectedImageName}/checkpoints_syn_000_checkpoint_epoch5_mix_0_syn.png`
+    document.getElementById('real_syn_lm_25').src = `data/final_res/${selectedImageName}/checkpoints_syn_025_checkpoint_epoch5_mix_25_syn.png`
+    document.getElementById('real_syn_lm_50').src = `data/final_res/${selectedImageName}/checkpoints_syn_050_checkpoint_epoch5_mix_50_syn.png`
+    document.getElementById('real_syn_lm_75').src = `data/final_res/${selectedImageName}/checkpoints_syn_075_checkpoint_epoch5_mix_75_syn.png`
+    document.getElementById('real_syn_lm_100').src = `data/final_res/${selectedImageName}/checkpoints_syn_100_checkpoint_epoch5_mix_100_syn.png`
+    document.getElementById('real_syn_lm_200').src = `data/final_res/${selectedImageName}/checkpoints_syn_200_checkpoint_epoch5_mix_100_syn.png`
+
 }
 
-function changeImage() {
-
-    // make sure you're in the right view
-    document.getElementById('imageViewerDrawingDiv').classList.remove("d-none");
-    document.getElementById('SetDisplayDiv').classList.add("d-none");
-
-    // update
-    imageViewer.updateImages(selectedImageName)
-
-    // update bars
-    imageViewer.updateBars(selectedImageName)
-}
+// global class instances
+let bcb_0, bcb_1, bcb_2, bcb_3, bcb_4, bcb_5, bcb_6
 
 
-function changeDataSet() {
-    // grab current image
-    console.log('new data set selected', document.querySelector('#imageSelector').value )
-    selectedDataSet= document.querySelector('#dataSetSelector').value
-}
+// load data using promises
+let promises = [
+    d3.json("data/final_res/syn_000_real_scores.json"),
+    d3.json("data/final_res/syn_000_syn_scores.json"),
 
-function displayAllImages (setName){
-    console.log(setName)
-
-    // minimize other
-    document.getElementById('imageViewerDrawingDiv').classList.add("d-none");
-    document.getElementById('SetDisplayDiv').classList.remove("d-none");
-    // populate images
-
-    let htmlString = ``
-
-    // You can loop through an array directly by calling .forEach() on it
-    imageNamesInSelectedDataSet.forEach(imageName => {
-
-        // calculate reasonable image height for ~200 images
-        let width = document.getElementById('SetDisplayDiv').getBoundingClientRect().width/25
+    d3.json("data/final_res/syn_025_real_scores.json"),
+    d3.json("data/final_res/syn_025_syn_scores.json"),
 
 
-        htmlString +=
-            `<div class="col">
-                <div class="row thumbnail">
-                    <img src="data/rob_1/img/${setName}/${imageName}.jpeg" width="${width}" onclick="displayDetails('${imageName}')">
-                </div>
-            </div>`
+    d3.json("data/final_res/syn_050_real_scores.json"),
+    d3.json("data/final_res/syn_050_syn_scores.json"),
+
+
+    d3.json("data/final_res/syn_075_real_scores.json"),
+    d3.json("data/final_res/syn_075_syn_scores.json"),
+
+
+    d3.json("data/final_res/syn_100_real_scores.json"),
+    d3.json("data/final_res/syn_100_syn_scores.json"),
+
+
+    d3.json("data/final_res/syn_200_real_scores.json"),
+    d3.json("data/final_res/syn_200_syn_scores.json")
+];
+
+
+Promise.all(promises)
+    .then(function (data) {
+        startApp(data)
+    })
+    .catch(function (err) {
+        console.log(err)
     });
 
-    document.getElementById('SetDisplayDiv').innerHTML = htmlString
+
+function startApp(data){
+
+    console.log(data)
+    // select image set
+    changeSet()
+
+    // create new instance
+    bcb_0 = new BreadCrumbBar("bcb_0", data[0], data[1], `Seg Model | trained on 1000 Real 0 Syn`);
+    bcb_1 = new BreadCrumbBar("bcb_1", data[2], data[3]);
+    bcb_2 = new BreadCrumbBar("bcb_2", data[4], data[5]);
+    bcb_3 = new BreadCrumbBar("bcb_3", data[6], data[7]);
+    bcb_4 = new BreadCrumbBar("bcb_4", data[8], data[9]);
+    bcb_5 = new BreadCrumbBar("bcb_5", data[10], data[11]);
 
 
+    let scoreTableHTML = ``;
 
-}
+    let methodNames = [
+        'syn_000','syn_000',
+        'syn_025','syn_025',
+        'syn_050','syn_050',
+        'syn_075', 'syn_075',
+        'syn_100', 'syn_100',
+        'syn_200', 'syn_200',
+    ]
 
-function displayDetails(name = selectedImageName){
+    data.forEach( (json,i) => {
 
-    // update selectedImageName in case it was triggered through imageClick
-    console.log(name)
-    selectedImageName = name
+        if ( (i+1) % 2){
+            scoreTableHTML += `<div class="row" style="height: 4vh; font-size: 1vh">
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${methodNames[i]}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${json["Labelwise_DICE"][0].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${json["Labelwise_DICE"][1].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${json["Labelwise_DICE"][2].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${json["Labelwise_DICE"][3].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${json["Labelwise_DICE"][4].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${json["Labelwise_DICE"][5].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${json["DICE"].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>`
+        }
 
-    // minimize other
-    document.getElementById('imageViewerDrawingDiv').classList.remove("d-none");
-    document.getElementById('SetDisplayDiv').classList.add("d-none");
+    })
 
-    // call change image, and everything will go automatically
-    changeImage()
-
+    document.getElementById("scoreTable").innerHTML += scoreTableHTML
 }
