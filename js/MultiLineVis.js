@@ -134,9 +134,9 @@ class MultiLineVis {
 
 
 
-        // Draw the line
+        // Draw the line for real
         vis.svg.selectAll(".line")
-            .data(finalSyn)
+            .data(finalReal)
             .enter()
             .append("path")
             .attr("fill", "none")
@@ -150,9 +150,9 @@ class MultiLineVis {
                     (d.values)
             })
 
-        // Draw the line
+        // Draw the lines for synthetic
         vis.svg.selectAll(".line")
-            .data(finalReal)
+            .data(finalSyn)
             .enter()
             .append("path")
             .attr("fill", "none")
