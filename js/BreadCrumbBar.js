@@ -75,6 +75,13 @@ class BreadCrumbBar {
             .attr('transform', `translate(${vis.width / 2}, -5)`)
             .attr('text-anchor', 'middle');
 
+        // tooltip
+        vis.tooltip = d3.select("body").append('div')
+            .attr('class', "tooltip")
+            .attr('id', 'barTooltip')
+
+
+
         // axis groups
         vis.xAxisGroup = vis.svg.append('g')
             .attr('class', 'axis x-axis')
@@ -115,7 +122,12 @@ class BreadCrumbBar {
 
         let barGroups = vis.svg.selectAll().data(vis.data)
             .enter().append('g')
-                .attr("transform", (d,i) => `translate(${vis.x0(d.label_name)},0)`);
+            .attr('class', 'barGroup')
+            .attr("transform", (d,i) => `translate(${vis.x0(d.label_name)},0)`)
+            .attr('stroke', 5)
+            .on('mouseover', function(event, d){
+                console.log('d')
+            })
 
         barGroups.selectAll(".bar.real")
             .data(d => [d])
@@ -130,6 +142,43 @@ class BreadCrumbBar {
                 return vis.height - vis.y(d.real)
             })
             .style('fill', d => vis.colorDict[d.label_name])
+            .on("mouseout", function (event, d) {
+
+                console.log('out')
+
+                // reset opacity
+                d3.select(this)
+                    .attr('stroke-width', 1)
+                    .style('opacity', 1)
+
+                vis.tooltip
+                    .style("opacity", 0)
+                    .style("left", 0 + "px")
+                    .style("top", 0 + "px")
+
+            })
+            .on('mouseover', function (event, d) {
+
+                // update color of hovered state
+                d3.select(this)
+                    .attr('stroke-width', 1)
+                    .style('opacity', 0.8)
+
+                vis.tooltip
+                    .style("opacity", 1)
+                    .style("left", event.pageX + 20 + "px")
+                    .style("top", event.pageY + "px")
+                    .html(`
+                            <div style="background: ${vis.colorDict[d.label_name]}; border-radius: 5px; border: thin solid rgb(128,128,128);">
+                                <div style=" background: rgba(255,255,255,0.68); padding: 20px">
+                                    <h3>${d.label_name}<h3>
+                                    <h4> DICE real: ${d.real.toFixed(3)}</h4>
+                                    <h4> DICE syn: ${d.syn.toFixed(3)}</h4>
+                                </div>
+                            </div>`);
+            })
+
+
 
         let synRects = barGroups.selectAll(".bar.syn")
             .data(d => [d])

@@ -15,13 +15,6 @@
     <div class="row">
         <div class="col-10 offset-1" style="border: thin solid grey; border-radius: 5px;">
 
-            <!-- HEADING -->
-<!--            <div class="row d-flex justify-content-center" style="height: 10vh; padding: 0; background: #bdbdbd; border-bottom: thin solid grey">-->
-<!--                <div class="align-self-center">-->
-<!--                    <h1>Label Explorer</h1>-->
-<!--                </div>-->
-<!--            </div>-->
-
             <!-- SELECTION-ROW -->
             <div class="row" style="height: 10vh;">
                 <div class="col-4">
@@ -37,6 +30,9 @@
                                                 style="width: 50%" onchange="changeDataSet()">
                                         </select>
                                     </div>
+                                    <button id="switchView" class="btn  btn-secondary align-self-center" type="button"
+                                            onclick="switchView()" style="border: thin solid black; background: #6e6a6a; font-size: 1vh">switch to individual experiment view
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -47,9 +43,9 @@
                     <div class="row" style="height: 100%; padding: 0.5vh">
                         <div class="col">
                             <div class="row justify-content-center" style="border: thin solid grey; height: 100%; background: #bdbdbd; border-radius: 5px">
-                                <button id="switchView" class="btn  btn-secondary align-self-center" type="button"
-                                        onclick="switchView()" style="border: thin solid black; background: #6e6a6a; font-size: 1vh">switch to individual experiment view
-                                </button>
+                                <div class="align-self-center">
+                                    <h1>Label Explorer</h1>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -134,7 +130,7 @@
                                             </div>
                                         </div>
                                         <div class="col-2">
-                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                            <div class="row justify-content-center" style="height: 20vh;">
                                                 <img class="align-self-center" id="real_gen_lm_200" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
                                             </div>
                                         </div>
@@ -167,7 +163,7 @@
                                             </div>
                                         </div>
                                         <div class="col-2">
-                                            <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
+                                            <div class="row justify-content-center" style="height: 20vh;">
                                                 <img class="align-self-center" id="real_syn_lm_200" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
                                             </div>
                                         </div>
@@ -179,7 +175,9 @@
 
                             <div class="row" style="height: 15vh">
                                 <div class="col-3">
-                                    <div class="row" style="border: thin solid grey; height: 15vh; margin-right: -0.5vw; border-radius: 5px; background: #bdbdbd; margin-top: 0.5vh">colormanager</div>
+                                    <div class="row" id="legendDiv" style="border: thin solid grey; height: 15vh; margin-right: -0.5vw; border-radius: 5px; background: #bdbdbd; margin-top: 0.5vh">
+
+                                    </div>
 
                                 </div>
                                 <div class="col-9">
@@ -280,7 +278,9 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div class="col-6">
+                                    <div class="row" id="lineChartDiv" style="height: 29vh; margin-top: 1vh; margin-bottom: 1vh; margin-right: 0.1vw; border: thin solid grey; background: white">                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -328,10 +328,12 @@
 
 <!-- OWN JS -->
 
+<script src="js/LegendVis.js"></script>
 <script src="js/ChangingLinesVis.js"></script>
+<script src="js/MultiLineVis.js"></script>
 <script src="js/BreadCrumbBar.js"></script>
 
-<script src="js/ImageViewer.js"></script>
+<script src="js/old/ImageViewer.js"></script>
 <script src="js/imageNames.js"></script>
 <script src="js/main.js"></script>
 </body>

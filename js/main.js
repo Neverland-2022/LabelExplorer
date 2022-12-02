@@ -37,7 +37,7 @@ function changeSet() {
 }
 
 // global class instances
-let bcb_0, bcb_1, bcb_2, bcb_3, bcb_4, bcb_5, bcb_6
+let legend, bcb_0, bcb_1, bcb_2, bcb_3, bcb_4, bcb_5, lineChart
 
 
 // load data using promises
@@ -81,6 +81,9 @@ function startApp(data){
     // select image set
     changeSet()
 
+    // create legend
+    legend = new LegendVis("legendDiv")
+
     // create new instance
     bcb_0 = new BreadCrumbBar("bcb_0", data[0], data[1], `Seg Model | trained on 1000 Real 0 Syn`);
     bcb_1 = new BreadCrumbBar("bcb_1", data[2], data[3]);
@@ -88,6 +91,9 @@ function startApp(data){
     bcb_3 = new BreadCrumbBar("bcb_3", data[6], data[7]);
     bcb_4 = new BreadCrumbBar("bcb_4", data[8], data[9]);
     bcb_5 = new BreadCrumbBar("bcb_5", data[10], data[11]);
+
+    // create new
+    lineChart = new MultiLineVis("lineChartDiv", data, 'title');
 
 
     let scoreTableHTML = ``;
@@ -113,51 +119,51 @@ function startApp(data){
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
+                                                    <div class="row justify-content-center" style="height: 100%; background: rgba(185,224,255,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][0].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                            ${json["Labelwise_DICE"][0].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][0].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
+                                                    <div class="row justify-content-center" style="height: 100%; background: rgba(40,84,48,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][1].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                            ${json["Labelwise_DICE"][1].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][1].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
+                                                    <div class="row justify-content-center" style="height: 100%; background: rgba(164,190,123,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][2].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                            ${json["Labelwise_DICE"][2].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][2].toFixed(3)}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                               <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%; background: rgba(229,217,182,0.5)">
+                                                        <span class="align-self-center">
+                                                            ${json["Labelwise_DICE"][3].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][3].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
+                                                    <div class="row justify-content-center" style="height: 100%; background: rgba(235,100,64,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][3].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                            ${json["Labelwise_DICE"][4].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][4].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
+                                                    <div class="row justify-content-center" style="height: 100%; background: rgba(119,67,219,0.5)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][4].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
+                                                            ${json["Labelwise_DICE"][5].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][5].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
+                                                    <div class="row justify-content-center" style="height: 100%;">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][5].toFixed(3)} | ${data[i+1]["Labelwise_DICE"][0].toFixed(3)}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                            ${json["DICE"].toFixed(3)}
+                                                            ${json["DICE"].toFixed(3)} | ${data[i + 1]["DICE"].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -167,4 +173,7 @@ function startApp(data){
     })
 
     document.getElementById("scoreTable").innerHTML += scoreTableHTML
+
+
 }
+
