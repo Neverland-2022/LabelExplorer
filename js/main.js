@@ -85,12 +85,12 @@ function startApp(data){
     legend = new LegendVis("legendDiv")
 
     // create new instance
-    bcb_0 = new BreadCrumbBar("bcb_0", data[0], data[1], `Seg Model | trained on 1000 Real 0 Syn`);
-    bcb_1 = new BreadCrumbBar("bcb_1", data[2], data[3]);
-    bcb_2 = new BreadCrumbBar("bcb_2", data[4], data[5]);
-    bcb_3 = new BreadCrumbBar("bcb_3", data[6], data[7]);
-    bcb_4 = new BreadCrumbBar("bcb_4", data[8], data[9]);
-    bcb_5 = new BreadCrumbBar("bcb_5", data[10], data[11]);
+    bcb_0 = new BreadCrumbBar("bcb_0", data[0], data[1], `Real & Syn DICE for syn_000`);
+    bcb_1 = new BreadCrumbBar("bcb_1", data[2], data[3], `Real & Syn DICE for syn_025 `);
+    bcb_2 = new BreadCrumbBar("bcb_2", data[4], data[5], `Real & Syn DICE for syn_050 `);
+    bcb_3 = new BreadCrumbBar("bcb_3", data[6], data[7], `Real & Syn DICE for syn_075 `);
+    bcb_4 = new BreadCrumbBar("bcb_4", data[8], data[9], `Real & Syn DICE for syn_100 `);
+    bcb_5 = new BreadCrumbBar("bcb_5", data[10], data[11], `Real & Syn DICE for syn_200 `);
 
     // create new
     lineChart = new MultiLineVis("lineChartDiv", data, 'title');

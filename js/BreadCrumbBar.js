@@ -91,7 +91,6 @@ class BreadCrumbBar {
             .attr('class', 'axis y-axis');
 
 
-        vis.labels = ["l1", "l2","l3","l4","l5","l6"]
 
 
 
@@ -117,7 +116,7 @@ class BreadCrumbBar {
 
         // // axis
         vis.xAxisGroup.call(d3.axisBottom(vis.x0))
-        vis.yAxisGroup.call(d3.axisLeft(vis.y))
+        vis.yAxisGroup.call(d3.axisLeft(vis.y).ticks(5))
 
 
         let barGroups = vis.svg.selectAll().data(vis.data)
@@ -158,7 +157,7 @@ class BreadCrumbBar {
 
             })
             .on('mouseover', function (event, d) {
-
+                
                 // update color of hovered state
                 d3.select(this)
                     .attr('stroke-width', 1)
@@ -171,7 +170,7 @@ class BreadCrumbBar {
                     .html(`
                             <div style="background: ${vis.colorDict[d.label_name]}; border-radius: 5px; border: thin solid rgb(128,128,128);">
                                 <div style=" background: rgba(255,255,255,0.68); padding: 20px">
-                                    <h3>${d.label_name}<h3>
+                                    <h3>${vis.labels[+  d.label_name[1]+1]}<h3>
                                     <h4> DICE real: ${d.real.toFixed(3)}</h4>
                                     <h4> DICE syn: ${d.syn.toFixed(3)}</h4>
                                 </div>

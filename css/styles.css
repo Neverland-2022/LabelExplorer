@@ -55,7 +55,11 @@ h3 {
     width: 100%;
 }
 
-.title {
+text.title {
+    font-size: 1.5vh;
+}
+
+text.sub-title {
     font-size: 1vh;
 }
 
