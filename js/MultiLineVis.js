@@ -9,8 +9,7 @@ class MultiLineVis {
         this.labels = ['water', 'tree canopy / forest', 'low vegetation / field', 'barren land', 'impervious (other)', 'impervious (road)']
         this.groups = ["syn_000", "syn_025", "syn_050", "syn_075", "syn_100", "syn_200"]
 
-        this.titleText = title
-
+        this.titleText = "Change in DICE Scores for predicted Label Masks (Real & Synthetic) over Different Experiment Ratios"
         this.metric = "Labelwise_DICE"
         this.metricName = 'DICE'
 
@@ -69,7 +68,6 @@ class MultiLineVis {
             .attr('class', 'title')
             .append('text')
             .attr('class', 'title')
-            .text('Change in DICE Scores for predicted Label Masks (Real & Synthetic) over Different Experiment Ratios')
             .attr('transform', `translate(${vis.width / 2}, -20)`)
             .attr('text-anchor', 'middle');
 
@@ -296,6 +294,8 @@ class MultiLineVis {
 
                 })
 
+        // update title text
+        vis.title.text(vis.titleText)
 
 
     }

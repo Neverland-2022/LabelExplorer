@@ -245,7 +245,7 @@ function populateTable(data, metric){
 
     // update string
     document.getElementById("scoreTable").innerHTML = scoreTableHTML
-    
+
 }
 
 
@@ -263,6 +263,8 @@ function changeMetric(){
 
         // update multiLineChart
         lineChart.metric = "Labelwise_DICE"
+        lineChart.titleText = 'Change in DICE Scores for predicted Label Masks (Real & Synthetic) over Different Experiment Ratios'
+
         lineChart.wrangleData()
 
         // update barCharts
@@ -300,6 +302,7 @@ function changeMetric(){
 
         // update multiLineChart
         lineChart.metric = "Labelwise_IOU"
+        lineChart.titleText = 'Change in IoU Scores for predicted Label Masks (Real & Synthetic) over Different Experiment Ratios'
         lineChart.wrangleData()
 
         // update barCharts
