@@ -70,3 +70,7 @@ text.legend-text {
 text.legend-title {
     font-size: 20px;
 }
+
+img {
+    border: 2px solid black;
+}

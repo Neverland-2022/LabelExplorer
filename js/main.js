@@ -37,7 +37,7 @@ function changeSet() {
 }
 
 // global class instances
-let legend, bcb_0, bcb_1, bcb_2, bcb_3, bcb_4, bcb_5, lineChart
+let legend, bcb_0, bcb_1, bcb_2, bcb_3, bcb_4, bcb_5, lineChart, allData
 
 
 // load data using promises
@@ -77,6 +77,9 @@ Promise.all(promises)
 
 function startApp(data){
 
+    // store loaded data globally
+    allData = data
+
     console.log(data)
     // select image set
     changeSet()
@@ -95,8 +98,75 @@ function startApp(data){
     // create new
     lineChart = new MultiLineVis("lineChartDiv", data, 'title');
 
+    // initially, populate table with DICE scores
+    populateTable(data, "Labelwise_DICE")
 
-    let scoreTableHTML = ``;
+}
+
+function populateTable(data, metric){
+    let metricNameShort = metric.split('_')[1]
+
+
+    let scoreTableHTML = `<div class="row" style="height: 5vh; font-size: 1vh; border-bottom: thin solid black">
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           Method
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            water
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                         forest
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           low vegetation
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           barren land
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            impervious (other)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                           impervious (road)
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row justify-content-center" style="height: 100%">
+                                                        <span class="align-self-center">
+                                                            ${metricNameShort} (overall)
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+`;
 
     let methodNames = [
         'syn_000','syn_000',
@@ -107,6 +177,7 @@ function startApp(data){
         'syn_200', 'syn_200',
     ]
 
+    // populate string
     data.forEach( (json,i) => {
 
         if ( (i+1) % 2){
@@ -121,49 +192,49 @@ function startApp(data){
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%; background: rgba(185,224,255,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][0].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][0].toFixed(3)}
+                                                            ${json[metric][0].toFixed(3)} | ${data[i + 1][metric][0].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%; background: rgba(40,84,48,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][1].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][1].toFixed(3)}
+                                                            ${json[metric][1].toFixed(3)} | ${data[i + 1][metric][1].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%; background: rgba(164,190,123,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][2].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][2].toFixed(3)}
+                                                            ${json[metric][2].toFixed(3)} | ${data[i + 1][metric][2].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%; background: rgba(229,217,182,0.5)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][3].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][3].toFixed(3)}
+                                                            ${json[metric][3].toFixed(3)} | ${data[i + 1][metric][3].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%; background: rgba(235,100,64,0.50)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][4].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][4].toFixed(3)}
+                                                            ${json[metric][4].toFixed(3)} | ${data[i + 1][metric][4].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%; background: rgba(119,67,219,0.5)">
                                                         <span class="align-self-center">
-                                                            ${json["Labelwise_DICE"][5].toFixed(3)} | ${data[i + 1]["Labelwise_DICE"][5].toFixed(3)}
+                                                            ${json[metric][5].toFixed(3)} | ${data[i + 1][metric][5].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%;">
                                                         <span class="align-self-center">
-                                                            ${json["DICE"].toFixed(3)} | ${data[i + 1]["DICE"].toFixed(3)}
+                                                            ${json[metricNameShort].toFixed(3)} | ${data[i + 1]["DICE"].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -172,8 +243,90 @@ function startApp(data){
 
     })
 
-    document.getElementById("scoreTable").innerHTML += scoreTableHTML
-
-
+    // update string
+    document.getElementById("scoreTable").innerHTML = scoreTableHTML
+    
 }
 
+
+function changeMetric(){
+
+    console.log('switched',document.getElementById("metricSelector").checked)
+
+    if (document.getElementById("metricSelector").checked){
+
+        // update switch
+        document.getElementById("metricLabel").innerHTML = 'metric: DICE'
+
+        // update table
+        populateTable(allData, "Labelwise_DICE")
+
+        // update multiLineChart
+        lineChart.metric = "Labelwise_DICE"
+        lineChart.wrangleData()
+
+        // update barCharts
+        bcb_0.metric = "Labelwise_DICE"
+        bcb_0.titleText = 'Real & Syn DICE for syn_000'
+        bcb_0.wrangleData()
+
+        bcb_1.metric = "Labelwise_DICE"
+        bcb_1.titleText = 'Real & Syn DICE for syn_025'
+        bcb_1.wrangleData()
+
+        bcb_2.metric = "Labelwise_DICE"
+        bcb_2.titleText = 'Real & Syn DICE for syn_050'
+        bcb_2.wrangleData()
+
+        bcb_3.metric = "Labelwise_DICE"
+        bcb_3.titleText = 'Real & Syn DICE for syn_075'
+        bcb_3.wrangleData()
+
+        bcb_4.metric = "Labelwise_DICE"
+        bcb_4.titleText = 'Real & Syn DICE for syn_100'
+        bcb_4.wrangleData()
+
+        bcb_5.metric = "Labelwise_DICE"
+        bcb_5.titleText = 'Real & Syn DICE for syn_200'
+        bcb_5.wrangleData()
+
+    } else {
+
+        // update switch
+        document.getElementById("metricLabel").innerHTML = 'metric: IoU'
+
+        // update table
+        populateTable(allData, "Labelwise_IOU")
+
+        // update multiLineChart
+        lineChart.metric = "Labelwise_IOU"
+        lineChart.wrangleData()
+
+        // update barCharts
+        bcb_0.metric = "Labelwise_IOU"
+        bcb_0.titleText = 'Real & Syn IoU for syn_000'
+        bcb_0.wrangleData()
+
+        bcb_1.metric = "Labelwise_IOU"
+        bcb_1.titleText = 'Real & Syn IoU for syn_025'
+        bcb_1.wrangleData()
+
+        bcb_2.metric = "Labelwise_IOU"
+        bcb_2.titleText = 'Real & Syn IoU for syn_050'
+        bcb_2.wrangleData()
+
+        bcb_3.metric = "Labelwise_IOU"
+        bcb_3.titleText = 'Real & Syn IoU for syn_075'
+        bcb_3.wrangleData()
+
+        bcb_4.metric = "Labelwise_IOU"
+        bcb_4.titleText = 'Real & Syn IoU for syn_100'
+        bcb_4.wrangleData()
+
+        bcb_5.metric = "Labelwise_IOU"
+        bcb_5.titleText = 'Real & Syn IoU for syn_200'
+        bcb_5.wrangleData()
+
+    }
+
+}

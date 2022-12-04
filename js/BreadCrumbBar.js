@@ -4,12 +4,14 @@ class BreadCrumbBar {
     // constructor method to initialize Timeline object
     constructor(parentElement, scoreReal, scoreSyn, title) {
         this.parentElement = parentElement;
-        //this.data = data
 
         this.colors = ['#008000', '#808000', '#000080', '#800080', '#008080', '#808080']
         this.labels = ['water', 'tree canopy / forest', 'low vegetation / field', 'barren land', 'impervious (other)', 'impervious (road)']
 
-        this.title = title
+        this.titleText = title
+
+        this.metric = "Labelwise_DICE"
+        this.metricName = 'DICE'
 
         this.colorDict = {
             "l1": "#B9E0FF",
@@ -23,15 +25,7 @@ class BreadCrumbBar {
 
         this.scoreReal = scoreReal;
         this.scoreSyn = scoreSyn;
-        this.data = []
 
-        this.scoreReal["Labelwise_DICE"].forEach( (d,i) =>{
-            this.data.push({
-                "label_name":`l${i+1}`,
-                "real": d,
-                "syn": this.scoreSyn["Labelwise_DICE"][i]
-            })
-        })
 
         this.initVis()
     }
@@ -67,10 +61,10 @@ class BreadCrumbBar {
 
 
         // add title
-        vis.svg.append('g')
+        vis.title = vis.svg.append('g')
             .attr('class', 'title')
             .append('text')
-            .attr('class','title')
+            .attr('class', 'title')
             .text(vis.title)
             .attr('transform', `translate(${vis.width / 2}, -5)`)
             .attr('text-anchor', 'middle');
@@ -79,7 +73,6 @@ class BreadCrumbBar {
         vis.tooltip = d3.select("body").append('div')
             .attr('class', "tooltip")
             .attr('id', 'barTooltip')
-
 
 
         // axis groups
@@ -91,10 +84,35 @@ class BreadCrumbBar {
             .attr('class', 'axis y-axis');
 
 
+        vis.wrangleData()
+    }
 
+    wrangleData(){
+        let vis = this
 
+        vis.data = []
 
-        console.log(vis.scoreReal["Labelwise_DICE"])
+        vis.scoreReal[vis.metric].forEach( (d,i) =>{
+            this.data.push({
+                "label_name":`l${i+1}`,
+                "real": d,
+                "syn": this.scoreSyn[vis.metric][i]
+            })
+        })
+
+        vis.updateVis()
+    }
+
+    updateVis(){
+        let vis = this
+
+        console.log(vis.metric, 'here')
+
+        if (vis.metric === 'Labelwise_DICE'){
+            vis.metricName = 'DiCE'
+        } else {
+            vis.metricName ='IoU'
+        }
 
         vis.groups = ["l1", "l2", "l3", "l4", "l5", "l6"]
         vis.subGroups = ["real", "syn"]
@@ -119,21 +137,25 @@ class BreadCrumbBar {
         vis.yAxisGroup.call(d3.axisLeft(vis.y).ticks(5))
 
 
-        let barGroups = vis.svg.selectAll().data(vis.data)
-            .enter().append('g')
-            .attr('class', 'barGroup')
-            .attr("transform", (d,i) => `translate(${vis.x0(d.label_name)},0)`)
-            .attr('stroke', 5)
-            .on('mouseover', function(event, d){
-                console.log('d')
-            })
+        let barGroups = vis.svg.selectAll('.barGroup').data(vis.data)
 
-        barGroups.selectAll(".bar.real")
+            let mergedGroups = barGroups
+                .enter()
+                .append('g')
+                .attr('class', 'barGroup')
+                .merge(barGroups)
+                .attr("transform", (d,i) => `translate(${vis.x0(d.label_name)},0)`)
+                .attr('stroke', 5)
+
+        console.log('after',barGroups)
+
+        let realBars = mergedGroups.selectAll(".bar.real")
             .data(d => [d])
-            .enter()
+
+        realBars.enter()
             .append("rect")
+            .merge(realBars)
             .attr("class", "bar real")
-            .style("fill","blue")
             .attr("x", d => vis.x1('real'))
             .attr("y", d => vis.y(d.real))
             .attr("width", vis.x1.bandwidth())
@@ -157,7 +179,7 @@ class BreadCrumbBar {
 
             })
             .on('mouseover', function (event, d) {
-                
+
                 // update color of hovered state
                 d3.select(this)
                     .attr('stroke-width', 1)
@@ -170,33 +192,39 @@ class BreadCrumbBar {
                     .html(`
                             <div style="background: ${vis.colorDict[d.label_name]}; border-radius: 5px; border: thin solid rgb(128,128,128);">
                                 <div style=" background: rgba(255,255,255,0.68); padding: 20px">
-                                    <h3>${vis.labels[+  d.label_name[1]+1]}<h3>
-                                    <h4> DICE real: ${d.real.toFixed(3)}</h4>
-                                    <h4> DICE syn: ${d.syn.toFixed(3)}</h4>
+                                    <h3>${vis.labels[+  d.label_name[1]-1]}<h3>
+                                    <h4> ${vis.metricName} real: ${d.real.toFixed(3)}</h4>
+                                    <h4> ${vis.metricName} <EXTERNAL_FRAGMENT></EXTERNAL_FRAGMENT> syn: ${d.syn.toFixed(3)}</h4>
                                 </div>
                             </div>`);
             })
 
 
 
-        let synRects = barGroups.selectAll(".bar.syn")
+        let synBars = mergedGroups.selectAll(".bar.syn")
             .data(d => [d])
-            .enter()
-            .append("rect")
-            .attr("class", "bar syn")
-            .attr("x", d => vis.x1('syn'))
-            .attr("y", d => vis.y(d.syn))
-            .attr("width", vis.x1.bandwidth())
-            .attr("height", d => {
-                return vis.height - vis.y(d.syn)
-            })
-            .style('fill', d => vis.colorDict[d.label_name])
+
+            synBars
+                .enter()
+                .append("rect")
+                .merge(synBars)
+                .attr("class", "bar syn")
+                .attr("x", d => vis.x1('syn'))
+                .attr("y", d => vis.y(d.syn))
+                .attr("width", vis.x1.bandwidth())
+                .attr("height", d => {
+                    return vis.height - vis.y(d.syn)
+                })
+                .style('fill', d => vis.colorDict[d.label_name])
 
         // add pattern
-        barGroups.selectAll(".bar.syn.pattern")
+        let pattern = mergedGroups.selectAll(".bar.syn.pattern")
             .data(d => [d])
+        pattern
             .enter()
             .append("rect")
+            .attr("class", "bar syn pattern")
+            .merge(pattern)
             .attr("x", d => vis.x1('syn'))
             .attr("y", d => vis.y(d.syn))
             .attr("width", vis.x1.bandwidth())
@@ -206,9 +234,8 @@ class BreadCrumbBar {
             .attr('fill', 'url(#diagonalHatch)');
 
 
-
         // add color patches to color manager
-
+        vis.title.text(vis.titleText)
 
 
 

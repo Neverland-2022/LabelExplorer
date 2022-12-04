@@ -9,7 +9,10 @@ class MultiLineVis {
         this.labels = ['water', 'tree canopy / forest', 'low vegetation / field', 'barren land', 'impervious (other)', 'impervious (road)']
         this.groups = ["syn_000", "syn_025", "syn_050", "syn_075", "syn_100", "syn_200"]
 
-        this.title = title
+        this.titleText = title
+
+        this.metric = "Labelwise_DICE"
+        this.metricName = 'DICE'
 
         this.colorDict = {
             "l1": "#B9E0FF",
@@ -47,8 +50,6 @@ class MultiLineVis {
             .attr('id', 'multiLineTooltip')
 
 
-
-
         // append pattern
         vis.svg
             .append('defs')
@@ -64,10 +65,10 @@ class MultiLineVis {
 
 
         // add title
-        vis.svg.append('g')
+        vis.title = vis.svg.append('g')
             .attr('class', 'title')
             .append('text')
-            .attr('class','title')
+            .attr('class', 'title')
             .text('Change in DICE Scores for predicted Label Masks (Real & Synthetic) over Different Experiment Ratios')
             .attr('transform', `translate(${vis.width / 2}, -20)`)
             .attr('text-anchor', 'middle');
@@ -75,7 +76,7 @@ class MultiLineVis {
         vis.svg.append('g')
             .attr('class', 'title')
             .append('text')
-            .attr('class','sub-title')
+            .attr('class', 'sub-title')
             .text('(segmentation model trained on synthetic satellite images)')
             .attr('transform', `translate(${vis.width / 2}, -5)`)
             .attr('text-anchor', 'middle');
@@ -97,15 +98,19 @@ class MultiLineVis {
 
         vis.y = d3.scaleLinear()
             .range([vis.height, 0])
-            .domain([0,1])
+            .domain([0, 1])
 
         // // axis
         vis.xAxisGroup.call(d3.axisBottom(vis.x))
         vis.yAxisGroup.call(d3.axisLeft(vis.y))
 
 
+        vis.wrangleData()
 
-        console.log(vis.data)
+    }
+    wrangleData(){
+        let vis = this
+
 
         let dataReal = []
 
@@ -115,197 +120,181 @@ class MultiLineVis {
 
             // syn if odd
             if (i%2){
-                console.log(jsonFile["Labelwise_DICE"])
+                console.log(jsonFile[vis.metric])
                 //
-                jsonFile["Labelwise_DICE"].forEach((d,i) => helperSyn[i].push(d))
+                jsonFile[vis.metric].forEach((d,i) => helperSyn[i].push(d))
 
             } else { // else -> real
-                jsonFile["Labelwise_DICE"].forEach((d,i) => helperReal[i].push(d))
+                jsonFile[vis.metric].forEach((d,i) => helperReal[i].push(d))
             }
         })
 
 
-        let finalSyn = []
+        vis.finalSyn = []
 
         Object.entries(helperSyn).forEach(d =>{
-            finalSyn.push({
+            vis.finalSyn.push({
                 key: `l${+d[0] +1}`,
                 values: d[1]
             })
         })
 
-        let finalReal = []
+        vis.finalReal = []
 
         Object.entries(helperReal).forEach(d =>{
-            finalReal.push({
+            vis.finalReal.push({
                 key: `l${+d[0] +1}`,
                 values: d[1]
             })
         })
 
+        vis.updateVis()
+    }
 
-        console.log(finalReal)
+    updateVis(){
 
-
-
-
+        let vis = this
 
         // Draw the line for real
-        vis.svg.selectAll(".line")
-            .data(finalReal)
-            .enter()
-            .append("path")
-            .attr("fill", "none")
-            .attr("stroke-width", 3)
-            .attr("stroke", function(d){ return vis.colorDict[d.key] })
-            .attr("d", function(d){
-                return d3.line()
-                    .x(function(d,i) { return vis.x(vis.groups[i]) +vis.x.bandwidth()/2})
-                    .y(function(d) { return vis.y(d); })
-                    .curve(d3.curveCardinal)
-                    (d.values)
-            })
-            .on('mouseover', function (event,d) {
-                console.log(d, +d.key[1])
-                d3.select(this).attr('stroke-width',6)
+        let realLines = vis.svg.selectAll(".realline")
+            .data(vis.finalReal)
 
-                vis.tooltip
-                    .style("opacity", 1)
-                    .style("left", event.pageX + 20 + "px")
-                    .style("top", event.pageY -50 + "px")
-                    .html(`
-                            <div style="background: ${vis.colorDict[d.key]}; border-radius: 5px; border: thin solid rgb(128,128,128);">
-                                <div style=" background: rgba(255,255,255,0.68); padding: 20px">
-                                    <table>
-                                        <tr>      
-                                              <h3 style="text-align: center">${vis.labels[+d.key[1]-1]}<h3>
-                                              <h4 style="text-align: center">(real Label mask)<h4>
+            realLines
+                .enter()
+                .append("path")
+                .attr('class','realline')
+                .merge(realLines)
+                .attr("fill", "none")
+                .attr("stroke-width", 3)
+                .attr("stroke", function(d){ return vis.colorDict[d.key] })
+                .attr("d", function(d){
+                    return d3.line()
+                        .x(function(d,i) { return vis.x(vis.groups[i]) +vis.x.bandwidth()/2})
+                        .y(function(d) { return vis.y(d); })
+                        .curve(d3.curveCardinal)
+                        (d.values)
+                })
+                .on('mouseover', function (event,d) {
+                    console.log(d, +d.key[1])
+                    d3.select(this).attr('stroke-width',6)
 
-                                        </tr>
-                                        <tr style=" font-style: italic; " >
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_000</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_025</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_050</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_075</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_100</td>
-                                            <td>syn_200</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-right: thin solid grey">${d.values[0].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[1].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[2].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[3].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[4].toFixed(3)}</td>
-                                            <td>${d.values[5].toFixed(3)}</td>
-                                          </tr>
-                                    </table>
-                                    
-                                </div>
-                            </div>`);
+                    vis.tooltip
+                        .style("opacity", 1)
+                        .style("left", event.pageX + 20 + "px")
+                        .style("top", event.pageY -100 + "px")
+                        .html(`
+                                <div style="background: ${vis.colorDict[d.key]}; border-radius: 5px; border: thin solid rgb(128,128,128);opacity: 0.9">
+                                    <div style=" background: rgba(255,255,255,0.68); padding: 20px">
+                                        <table>
+                                            <tr>      
+                                                  <h3 style="text-align: center">${vis.labels[+d.key[1]-1]}<h3>
+                                                  <h4 style="text-align: center">(real Label mask)<h4>
+    
+                                            </tr>
+                                            <tr style=" font-style: italic; " >
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_000</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_025</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_050</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_075</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_100</td>
+                                                <td>syn_200</td>
+                                              </tr>
+                                              <tr>
+                                                <td style="border-right: thin solid grey">${d.values[0].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[1].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[2].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[3].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[4].toFixed(3)}</td>
+                                                <td>${d.values[5].toFixed(3)}</td>
+                                              </tr>
+                                        </table>
+                                        
+                                    </div>
+                                </div>`);
 
-            })
-            .on('mouseout', function (event,d) {
-                console.log(d)
-                d3.select(this).attr('stroke-width',3)
+                })
+                .on('mouseout', function (event,d) {
+                    console.log(d)
+                    d3.select(this).attr('stroke-width',3)
 
 
-                vis.tooltip
-                    .style("opacity", 0)
-                    .style("left", 0 + "px")
-                    .style("top", 0 + "px")
+                    vis.tooltip
+                        .style("opacity", 0)
+                        .style("left", 0 + "px")
+                        .style("top", 0 + "px")
 
-            })
+                })
 
         // Draw the lines for synthetic
-        vis.svg.selectAll(".line")
-            .data(finalSyn)
-            .enter()
-            .append("path")
-            .attr("fill", "none")
-            .attr("stroke-width", 3)
-            .attr("stroke-dasharray","5,5")
-            .attr("stroke", function(d){ return vis.colorDict[d.key] })
-            .attr("d", function(d){
-                return d3.line()
-                    .x(function(d,i) { return vis.x(vis.groups[i]) +vis.x.bandwidth()/2})
-                    .y(function(d) { return vis.y(d); })
-                    .curve(d3.curveCardinal)
-                    (d.values)
-            })
-            .on('mouseover', function (event,d) {
-                console.log(d, +d.key[1])
-                d3.select(this).attr('stroke-width',6)
+        let synLines = vis.svg.selectAll(".synline")
+            .data(vis.finalSyn)
 
-                vis.tooltip
-                    .style("opacity", 1)
-                    .style("left", event.pageX + 20 + "px")
-                    .style("top", event.pageY -50 + "px")
-                    .html(`
-                            <div style="background: ${vis.colorDict[d.key]}; border-radius: 5px; border: thin solid rgb(128,128,128);">
-                                <div style=" background: rgba(255,255,255,0.68); padding: 20px">
-                                    <table>
-                                        <tr>      
-                                              <h3 style="text-align: center">${vis.labels[+d.key[1]-1]}<h3>
-                                              <h4 style="text-align: center">(synthetic label mask)<h4>
+            synLines
+                .enter()
+                .append("path")
+                .attr('class', 'synline')
+                .merge(synLines)
+                .attr("fill", "none")
+                .attr("stroke-width", 3)
+                .attr("stroke-dasharray","5,5")
+                .attr("stroke", function(d){ return vis.colorDict[d.key] })
+                .attr("d", function(d){
+                    return d3.line()
+                        .x(function(d,i) { return vis.x(vis.groups[i]) +vis.x.bandwidth()/2})
+                        .y(function(d) { return vis.y(d); })
+                        .curve(d3.curveCardinal)
+                        (d.values)
+                })
+                .on('mouseover', function (event,d) {
+                    console.log(d, +d.key[1])
+                    d3.select(this).attr('stroke-width',6)
 
-                                        </tr>
-                                        <tr style=" font-style: italic; " >
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_000</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_025</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_050</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_075</td>
-                                            <td style="border-right: thin solid grey; padding: 2px">syn_100</td>
-                                            <td>syn_200</td>
-                                          </tr>
-                                          <tr>
-                                            <td style="border-right: thin solid grey">${d.values[0].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[1].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[2].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[3].toFixed(3)}</td>
-                                            <td style="border-right: thin solid grey">${d.values[4].toFixed(3)}</td>
-                                            <td>${d.values[5].toFixed(3)}</td>
-                                          </tr>
-                                    </table>
-                                    
-                                </div>
-                            </div>`);
+                    vis.tooltip
+                        .style("opacity", 1)
+                        .style("left", event.pageX + 20 + "px")
+                        .style("top", event.pageY -100 + "px")
+                        .html(`
+                                <div style="background: ${vis.colorDict[d.key]}; border-radius: 5px; border: thin solid rgb(128,128,128);opacity: 0.9">
+                                    <div style=" background: rgba(255,255,255,0.68); padding: 20px">
+                                        <table>
+                                            <tr>      
+                                                  <h3 style="text-align: center">${vis.labels[+d.key[1]-1]}<h3>
+                                                  <h4 style="text-align: center">(synthetic label mask)<h4>
+    
+                                            </tr>
+                                            <tr style=" font-style: italic; " >
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_000</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_025</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_050</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_075</td>
+                                                <td style="border-right: thin solid grey; padding: 2px">syn_100</td>
+                                                <td>syn_200</td>
+                                              </tr>
+                                              <tr>
+                                                <td style="border-right: thin solid grey">${d.values[0].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[1].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[2].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[3].toFixed(3)}</td>
+                                                <td style="border-right: thin solid grey">${d.values[4].toFixed(3)}</td>
+                                                <td>${d.values[5].toFixed(3)}</td>
+                                              </tr>
+                                        </table>
+                                        
+                                    </div>
+                                </div>`);
 
-            })
-            .on('mouseout', function (event,d) {
-                console.log(d)
-                d3.select(this).attr('stroke-width',3)
-
-
-                vis.tooltip
-                    .style("opacity", 0)
-                    .style("left", 0 + "px")
-                    .style("top", 0 + "px")
-
-            })
-
-        // let circleGroups = vis.svg.selectAll(".circle").data(finalSyn)
-        //     .enter().append("g")
-        //
-        //     circleGroups
-        //     .selectAll('.circle').data((d,i)=>d.values)
-        //         .enter().append('circle')
-        //         .attr('class', (d,i)=>{
-        //             console.log(d,i)
-        //         })
-        //         .attr("cx", (d,i) => vis.x(vis.groups[i]) +vis.x.bandwidth()/2)
-        //         .attr('cy', d=>vis.y(d))
-        //         .attr('r',5)
-        //         .attr("fill", )
+                })
+                .on('mouseout', function (event,d) {
+                    console.log(d)
+                    d3.select(this).attr('stroke-width',3)
 
 
+                    vis.tooltip
+                        .style("opacity", 0)
+                        .style("left", 0 + "px")
+                        .style("top", 0 + "px")
 
-        finalSyn.forEach(labelData=>{
-
-        })
-
-        //
-        // // draw circles
-
+                })
 
 
 

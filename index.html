@@ -22,17 +22,21 @@
                         <div class="col">
                             <div class="row justify-content-center" style="border: thin solid grey; height: 100%; background: #bdbdbd; border-radius: 5px">
                                 <div class="col">
-                                    <div class="row justify-content-center">
-                                        <div class="span align-self-center">Experiments:</div>
+                                    <div class="row justify-content-center" style="height: 100%">
+                                        <div class="span align-self-center">
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="metricSelector" onchange="changeMetric()" checked>
+                                                <label class="custom-control-label" for="metricSelector" id="metricLabel">metric: DICE</label>
+                                            </div>
+
+                                        </div>
                                     </div>
 <!--                                    <div class="row justify-content-center">-->
-<!--                                        <select id='dataSetSelector' class="custom-select align-self-center"-->
+<!--                                        <select  class="custom-select align-self-center"-->
 <!--                                                style="width: 50%" onchange="changeDataSet()">-->
 <!--                                        </select>-->
 <!--                                    </div>-->
-<!--                                    <button id="switchView" class="btn  btn-secondary align-self-center" type="button"-->
-<!--                                            onclick="switchView()" style="border: thin solid black; background: #6e6a6a; font-size: 1vh">switch to individual experiment view-->
-<!--                                    </button>-->
+
                                 </div>
                             </div>
                         </div>
@@ -73,14 +77,14 @@
                         <div class="col">
 
 <!--                            IMAGES -->
-                            <div class="row" style="border: thin solid grey; height: 40vh; border-radius: 5px; background: #bdbdbd;">
+                            <div class="row" style="border: thin solid grey; height: 40vh; border-radius: 5px; background: #ffffff;">
                                 <div class="col-3">
 
-                                    <div class="row" style="height: 40vh">
+                                    <div class="row" style="height: 40vh;">
 
                                         <div class="col-6">
-                                            <div class="row" style="height: 10vh"></div>
-                                            <div class="row" style="height:20vh">
+                                            <div class="row" style="height: 10vh;"></div>
+                                            <div class="row" style="height:20vh;">
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%;">
                                                         <img class="align-self-center" id="gt_label" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 90%">
@@ -91,10 +95,10 @@
 
                                         <div class="col-6">
 
-                                            <div class="row justify-content-center" style="height: 20vh">
+                                            <div class="row justify-content-center" style="height: 20vh;border-right: thin solid grey">
                                                 <img class="align-self-center" id="gt_sat_img" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
                                             </div>
-                                            <div class="row justify-content-center" style="height: 20vh">
+                                            <div class="row justify-content-center" style="height: 20vh;border-right: thin solid grey">
                                                 <img class="align-self-center" id="syn_sat_img" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="width: 18vh">
                                             </div>
                                         </div>
@@ -103,7 +107,7 @@
                                 </div>
                                 <div class="col-9">
 <!--                                    TOP-->
-                                    <div class="row" style="height: 20vh">
+                                    <div class="row" style="height: 20vh; border-left: thin solid grey">
                                         <div class="col-2">
                                             <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
                                                 <img class="align-self-center" id="real_gen_lm_0" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="height: 18vh">
@@ -136,7 +140,7 @@
                                         </div>
                                     </div>
 <!--                                    BOTTOM-->
-                                    <div class="row" style="height: 20vh">
+                                    <div class="row" style="height: 20vh; border-left: thin solid grey">
                                         <div class="col-2">
                                             <div class="row justify-content-center" style="height: 20vh; border-right: thin dotted black">
                                                 <img class="align-self-center" id="real_syn_lm_0" src="data/final_res/m_3807502_se_18_1_naip-new_cp1/checkpoints_syn_000_checkpoint_epoch5_mix_0_real.png" style="height: 18vh;" >
@@ -216,65 +220,65 @@
                                 <div class="col-6">
                                     <div class="row" style="height: 29vh; margin-top: 1vh; margin-bottom: 1vh; margin-left: 0.1vw; border: thin solid grey; background: white">
                                         <div class="col" id="scoreTable">
-                                            <div class="row" style="height: 5vh; font-size: 1vh; border-bottom: thin solid black">
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                           Method
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                            water
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                         forest
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                           low vegetation
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                           barren land
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                            impervious (other)
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                           impervious (road)
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row justify-content-center" style="height: 100%">
-                                                        <span class="align-self-center">
-                                                            DICE (overall)
-                                                        </span>
-                                                    </div>
-                                                </div>
+<!--                                            <div class="row" style="height: 5vh; font-size: 1vh; border-bottom: thin solid black">-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                           Method-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                            water-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                         forest-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                           low vegetation-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                           barren land-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                            impervious (other)-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                           impervious (road)-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col">-->
+<!--                                                    <div class="row justify-content-center" style="height: 100%">-->
+<!--                                                        <span class="align-self-center">-->
+<!--                                                            DICE (overall)-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
 
-                                            </div>
+<!--                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
