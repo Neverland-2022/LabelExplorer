@@ -234,7 +234,7 @@ function populateTable(data, metric){
                                                 <div class="col">
                                                     <div class="row justify-content-center" style="height: 100%;">
                                                         <span class="align-self-center">
-                                                            ${json[metricNameShort].toFixed(3)} | ${data[i + 1][metric].toFixed(3)}
+                                                            ${json[metricNameShort].toFixed(3)} | ${data[i + 1][metricNameShort].toFixed(3)}
                                                         </span>
                                                     </div>
                                                 </div>
